@@ -44,6 +44,9 @@
           <li class="nav-item">
             <a class="nav-link" href="/forum" style="color:white;">Forum</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/todo" style="color:white;">Calender</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
               style="color:white;">
@@ -68,11 +71,50 @@
       </div>
   </nav>
 
-  <h3 class="Title" style="text-align: center;">Welcome to <span id="Yarn">YARN</span><br>
+  <h3 class="Title" style="text-align: center; ">Welcome to <span id="Yarn">YARN</span><br>
     <%= user.username %>
   </h3>
+<div class="rowcards" style="margin-top: 20px;">
+  <div class="card" style="width: 18rem; background: white;">
+    <img src="/assets/MEMORY GAME.jpg" class="card-img-top" alt="">
+    <div class="card-body">
+      <h5 class="card-title">Memory Game</h5>
+      <p class="card-text">Unlocking nostalgia one match at a time – where the only thing sharper than our memory cards is our wit! </p>
+      <a href="/memory-games" class="btn btn-primary" style="display:grid; text-align: center;">Play</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem; background: white;">
+    <img src="/assets/FORUM.jpg" class="card-img-top" alt="">
+    <div class="card-body">
+      <h5 class="card-title">Forum</h5>
+      <p class="card-text">Where Alzheimer's warriors unite to share stories, swap strategies, and sprinkle a dash of humour on this challenging journey.</p>
+      <a href="/forum" class="btn btn-primary" style="display:grid; text-align: center;">Forum </a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem; background: white;">
+    <img src="/assets/JOURNAL.jpg" class="card-img-top" alt="">
+    <div class="card-body">
+      <h5 class="card-title">Journal</h5>
+      <p class="card-text">Join the journal journey – where each entry is a triumph over forgetfulness and a celebration of the indomitable human spirit</p>
+      <a href="/journal" class="btn btn-primary" style="display:grid; text-align: center;">Journal</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem; background: white;">
+    <img src="/assets/DOCTORS.jpg" class="card-img-top" alt="">
+    <div class="card-body">
+      <h5 class="card-title">Add Doctors</h5>
+      <p class="card-text">Connect with leading specialists and professionals guide you through the labyrinth of memory challenges.</p>
+      <a href="/add-doctor" class="btn btn-primary" style="display:grid; text-align: center;">Add Doctor</a>
+    </div>
+  </div>
+</div>
+
+
   <div class="elements">
-    <div class="card">
+    <div class="card" style="transform: translateZ(0);" >
       <h3 class="profile-title">Profile Details</h3>
       <div class="profile-info">
         <!-- Display emergency contact name -->
@@ -82,49 +124,16 @@
         </h2>
         <h2 class="profile-item">Phone no: <%= user.phone %>
         </h2>
-        <h2 class="profile-item">Age: <%= user.age %>
+      
+        <h2 class="profile-item">Emergency Contact: <%= user.emergencyContact.name %>
         </h2>
-        <h2 class="profile-item">Highscore: <%= ((scores)=> (scores.reduce((maxScore, currentScore) =>
-            currentScore.score > maxScore ? currentScore.score : maxScore, 0)))(user.scores) %></h2>
-        <% function tottimeplayed(scores) { %>
-          <% const totalTimeSpent=scores.reduce((total, score)=> total + score.timePerrun, 0); %>
-            <% function formatTime(seconds) { %>
-              <% if (seconds < 60) { return `${seconds} seconds`; } else if (seconds < 3600) { const
-                minutes=Math.floor(seconds / 60); const remainingSeconds=seconds % 60; return `${minutes} min and
-                ${remainingSeconds} sec`; } else { const hours=Math.floor(seconds / 3600); const
-                remainingMinutes=Math.floor((seconds % 3600) / 60); return `${hours} hrs and ${remainingMinutes} min`; }
-                %>
-                <% } %>
-                  <% const formattedTime=formatTime(totalTimeSpent); %>
-                    <% return formattedTime; %>
-                      <% } %>
-                        <h2 class="profile-item">Total Time: <%= tottimeplayed(user.scores) %>
-                        </h2>
-                        <h2 class="profile-item">Emergency Contact: <%= user.emergencyContact.name %>
-                        </h2>
 
       </div>
     </div>
 
-    <div class="buttons">
-      <div class="gameopt">
-        <a href="/memory-games" class="btngame">Memory Games</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- floatingbtn csv containing the events -->
-  <button id="eventsfloating">
-    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-megaphone-fill"
-      viewBox="0 0 16 16">
-      <path
-        d="M13 2.5a1.5 1.5 0 0 1 3 0v11a1.5 1.5 0 0 1-3 0zm-1 .724c-2.067.95-4.539 1.481-7 1.656v6.237a25 25 0 0 1 1.088.085c2.053.204 4.038.668 5.912 1.56zm-8 7.841V4.934c-.68.027-1.399.043-2.008.053A2.02 2.02 0 0 0 0 7v2c0 1.106.896 1.996 1.994 2.009l.496.008a64 64 0 0 1 1.51.048m1.39 1.081q.428.032.85.078l.253 1.69a1 1 0 0 1-.983 1.187h-.548a1 1 0 0 1-.916-.599l-1.314-2.48a66 66 0 0 1 1.692.064q.491.026.966.06" />
-    </svg>
-  </button>
-
-  <div id="popover">
-    <button id="popovertxt">
-      <div style="color: white; text-align: center; font-weight:bold ; font-size: 22px;">Upcoming Events:</div>
+   <div class="card" style="transform: translateZ(0);">
+    <h3 class="profile-title">Upcoming Events:</h3>
+    <div class="profile-info">
       <ul>
         <% upcomingEvents.forEach(event=> { %>
           <li>
@@ -132,6 +141,23 @@
           </li>
           <% }); %>
       </ul>
+    </div>
+
+   </div>
+  </div>
+
+  <!-- floatingbtn csv containing the events -->
+  <button id="eventsfloating">
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+      <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+      <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+    </svg>
+  </button>
+
+  <div id="popover">
+    <button id="popovertxt">
+      <!-- <div style="color: white; text-align: center; font-weight:bold ; font-size: 22px;">Upcoming Events:</div> -->
+    <p> chattings only</p>
     </button>
   </div>
 

@@ -170,3 +170,21 @@ textarea {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+/* .delete-entry {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+} */
+
+/* .delete-entry i {
+    color: white;
+} */

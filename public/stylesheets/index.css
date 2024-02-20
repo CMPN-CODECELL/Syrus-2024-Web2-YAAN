@@ -3,7 +3,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-image: url('/assets/Welcome.jpg');
+  background-image: url('/assets/neww.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -60,7 +60,17 @@ body {
   font-weight: 600;
   font-style: italic;
 }
+.rowcards{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: auto;
+  gap:20px;
+}
 
+.card:hover{
+  transform: scale(1.05);
+}
 .card {
   width: 550px;
   height: max-content;
@@ -83,7 +93,7 @@ body {
 
   .card:hover {
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
-    transform: translateZ(0); 
+    /* transform: translateZ(0);  */
   }
   
   .profile-info {
@@ -149,9 +159,10 @@ button:hover {
 
 .elements{
   display: flex;
-  gap: 15%;
+  gap: 7.5%;
   justify-content: center;
   margin-top: 30px;
+  margin-bottom: 30px;
   
   /* position: fixed; */
 }
@@ -215,7 +226,9 @@ button:hover {
   position: fixed;
   bottom: 80px;
   right: 30px;
-  background: linear-gradient(45deg, #3498db, #935dab);  
+  /* background: linear-gradient(45deg, #3498db, #935dab); */
+  background: white;
+  color: black;
   text-decoration: none;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -223,26 +236,9 @@ button:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* #popovertxt{
-  background-color: linear-gradient(45deg, #3498db, #935dab); 
-  text-decoration: none;
-} */
-
-
-#popover ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-#popover li {
-  color: #fff; /* Text color for the list items */
-  margin-bottom: 5px;
-}
-
 #popovertxt {
   background: none; /* Remove the background from the button */
-  color: #fff; /* Text color for the button */
+  color: black; /* Text color for the button */
   border: none;
   cursor: pointer;
   text-decoration: none;

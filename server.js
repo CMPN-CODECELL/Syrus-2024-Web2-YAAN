@@ -500,12 +500,12 @@ app.post('/sendSOS', checkAuthenticated, async (req, res) => {
     const patientName = user.username;
     const patientContact = user.phone;
 
-    // // Send SMS using Twilio
-    // await client.messages.create({
-    //   body: `THIS IS AN SOS MESSAGE BY YARN, from ${patientName}. Please contact immediately at ${patientContact}.`,
-    //   from: '+15169812980', // Your Twilio phone number
-    //   to: emergencyContactPhone
-    // });
+    // Send SMS using Twilio
+    await client.messages.create({
+      body: `THIS IS AN SOS MESSAGE BY YARN, from ${patientName}. Please contact immediately at ${patientContact}.`,
+      from: '+15169812980', // Your Twilio phone number
+      to: emergencyContactPhone
+    });
 
     console.log('SOS sent successfully.');
     // Set success flash message
@@ -567,6 +567,10 @@ app.post('/comment', checkAuthenticated, async (req, res) => {
 
 app.get('/physical-activity', checkAuthenticated, (req, res) => {
   res.render('home-physicalgame.ejs');
+});
+
+app.get('/todo', checkAuthenticated, (req, res) => {
+  res.render('todo.ejs');
 });
 
 
