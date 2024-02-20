@@ -68,6 +68,39 @@ const upcomingEventSchema = new mongoose.Schema({
 const UpcomingEvent = mongoose.model('upcoming', upcomingEventSchema);
 
 
+const forumSchema = new mongoose.Schema({
+  heading: {
+    type: String,
+    required: true
+  },
+  description: String,
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  tags: [String],
+  comments: [{
+    content: String,
+    author: String,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  likes: {
+    type: Number,
+    default: 0
+  }
+
+});
+
+const Forum = mongoose.model('Forum', forumSchema);
+
+
 
 
 
@@ -135,6 +168,8 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
   failureRedirect: '/login',
   failureFlash: true,
 }));
+
+
 
 // Register page
 app.get('/register', checkNotAuthenticated, (req, res) => {
@@ -266,6 +301,179 @@ app.post('/edit-profile', checkAuthenticated, async (req, res) => {
     res.redirect('/edit-profile'); // Redirect back to the edit profile page in case of an error
   }
 });
+app.get('/add-doctor', checkAuthenticated, async (req, res) => {
+  try {
+    const user = await req.user;
+    const doctors = await getDoctorList(user);
+
+    if (doctors.length > 0) {
+      res.render('add-doctor.ejs', { user, doctors });
+    } else {
+      res.render('add-doctor.ejs', { user, doctors: [] });
+    }
+  } catch (error) {
+    console.error('Error rendering add-doctor page:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+app.get('/forum', checkAuthenticated, async (req, res) => {
+  try {
+    // Assuming user is authenticated, retrieve the user from req.user
+    const user = await req.user;
+
+    // Fetch forum data from the database
+    const forums = await Forum.find({}).populate('createdBy').exec();
+
+    // Render the forum page and pass the forum data and user data to the EJS template
+    res.render('forum.ejs', { user: user, forums: forums });
+  } catch (error) {
+    console.error('Error fetching forum data:', error);
+    // Handle the error appropriately, for example, redirecting to an error page
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+// POST request to create a new forum post
+app.post('/forum', checkAuthenticated, async (req, res) => {
+  try {
+    // Extract data from the request body
+    const { heading, description, tags } = req.body;
+    const user = await req.user; // Assuming the user is authenticated
+
+    // Create a new forum post instance
+    const newPost = new Forum({
+      heading: heading,
+      description: description,
+      createdBy: user._id, // Assuming req.user contains the current user's information
+      tags: tags.split(','), // Split tags string into an array
+    });
+
+    // Save the new forum post to the database
+    await newPost.save();
+
+    // Redirect the user to the forum page or any other relevant page
+    req.flash('success', 'Forum post created successfully.');
+    res.redirect('/forum');
+  } catch (error) {
+    console.error('Error creating forum post:', error);
+    req.flash('error', 'An error occurred while creating the forum post.');
+    res.redirect('/forum'); // Redirect back to the forum page in case of an error
+  }
+});
+
+app.post('/sendSOS', checkAuthenticated, async (req, res) => {
+  try {
+    // Get the authenticated user's information
+    const user = await req.user;
+
+    // Extract the emergency contact phone number from the user's information
+    const emergencyContactPhone = user.emergencyContact.phone;
+
+    // Extract user's name and contact number
+    const patientName = user.username;
+    const patientContact = user.phone;
+
+    // Send SMS using Twilio
+    await client.messages.create({
+      body: `THIS IS AN SOS MESSAGE BY YARN, from ${patientName}. Please contact immediately at ${patientContact}.`,
+      from: '+15169812980', // Your Twilio phone number
+      to: emergencyContactPhone
+    });
+
+    console.log('SOS sent successfully.');
+    // Set success flash message
+    req.flash('success', 'SOS request sent successfully.');
+
+    // Redirect to the home page or any other relevant page
+    res.redirect('/');
+  } catch (error) {
+    console.error('Error sending SOS:', error);
+    // Set error flash message
+    req.flash('error', 'Failed to send SOS.');
+
+    // Redirect to the home page or any other relevant page
+    res.redirect('/');
+  }
+});
+
+
+
+// Handle doctor addition form submission
+app.post('/add-doctor', checkAuthenticated, async (req, res) => {
+  try {
+    const patient = await req.user; // Retrieve the user from the database
+    // console.log(patient);
+    // console.log("Aaaaaaaaa");
+
+    const { doctorName, doctorEmail } = req.body;
+
+    // Check if the doctor with the specified name and email exists
+    const doctor = await User.findOne({ username: doctorName, email: doctorEmail, userType: 'doctor' });
+
+    // Get the updated list of doctors
+    const doctors = await getDoctorList(patient);
+    console.log(doctors)
+
+    if (!doctor) {
+      return res.render('add-doctor.ejs', { success: false, error: 'Invalid doctor name or email', user: patient, doctors: doctors });
+    }
+
+    // Check if the doctor is already in the patient's connections
+    if (patient.connections.includes(doctor._id.toString())) {
+      console.log("Doctor is already in connections");
+      return res.render('add-doctor.ejs', { success: false, error: 'Doctor is already in your connections', user: patient, doctors: doctors });
+    }
+
+    // Check if the connection request has already been sent by the doctor
+    if (doctor.connectionRequests.includes(patient._id.toString())) {
+      // console.log("baby");
+      return res.render('add-doctor.ejs', { success: false, error: 'Request already sent', user: patient, doctors: doctors });
+    }
+
+    // Store the connection request only on the doctor's side
+    doctor.connectionRequests.push(patient._id.toString());
+    await doctor.save();
+
+
+    res.render('add-doctor.ejs', { success: true, message: 'Request successfully sent', user: patient, doctors: doctors });
+  } catch (error) {
+    console.error('Error adding doctor:', error);
+    res.render('add-doctor.ejs', { success: false, message: 'Internal Server Error', user: req.user, error: error.message, doctors: doctors });
+  }
+});
+
+
+app.delete('/remove-foreign-user', checkAuthenticated, async (req, res) => {
+  try {
+    const currentUser = await req.user; // Assuming req.user contains the current doctor's information
+
+    // Extract foreignId from the request body
+    const foreignId = req.body.foreignId;
+
+    // Check if the foreignId is valid (you might want to add more validation)
+    if (!foreignId) {
+      return res.status(400).json({ success: false, message: 'Invalid foreignId' });
+    }
+
+    // Remove the foreignId from the user's connections
+    currentUser.connections = currentUser.connections.filter(connection => connection.toString() !== foreignId);
+    await currentUser.save();
+
+    // Remove the user from the foreignId's connections
+    const foreignUser = await User.findById(foreignId);
+    if (foreignUser) {
+      foreignUser.connections = foreignUser.connections.filter(connection => connection.toString() !== currentUser._id.toString());
+      await foreignUser.save();
+    }
+
+    res.status(200).json({ success: true, message: 'Patient removed successfully' });
+  } catch (error) {
+    console.error('Error removing patient:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+
 
 
 app.delete('/delete-account', checkAuthenticated, async (req, res) => {
