@@ -49,4 +49,71 @@ body {
     background-color: #3498db;
     color: white;
   }
+
+  #eventsfloating {
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  #eventsfloating svg {
+    margin-right: 5px;
+  }
+  
+  #popover {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 30px;
+    background: linear-gradient(45deg, #3498db, #935dab);  
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  
+  #popovertxt {
+    background: none; /* Remove the background from the button */
+    color: #fff; /* Text color for the button */
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: start;
+  }
+  
+
+ label {
+  display: block;
+  margin-bottom: 8px;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+input {
+  width: 100%;
+  padding: 14px; 
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  border: 2px solid #3498db;
+  border-radius: 8px; 
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+}
+
+input:hover,
+input:focus {
+  border-color: #297eb8; 
+  box-shadow: 0 0 8px #3498db4d; 
+}
   

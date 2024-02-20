@@ -173,7 +173,20 @@ video {
     margin-left: 10px;
     gap: 50px; /* Adjust the spacing between radio buttons and labels */
 }
-
+#yearOfRegistration{
+    padding: 11px;
+    border-radius: 7px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border: 2px solid #3498db;
+}
+#medicalCouncil{
+    padding: 11px;
+    border-radius: 7px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border: 2px solid #3498db;
+}
 @media only screen and (max-width: 768px) {
     /* Apply styles for screens with a maximum width of 768 pixels (adjust as needed) */
     .circle {
@@ -200,5 +213,3 @@ video {
         top:41%;
     }
   }
-
-

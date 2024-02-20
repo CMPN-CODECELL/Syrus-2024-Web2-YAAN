@@ -30,8 +30,6 @@ const userSchema = new mongoose.Schema({
   password: String,
   age: String,
   userType: { type: String, enum: ['patient', 'doctor'] },
-  branch: String,
-  division: String,
   emergencyContact: {
     name: String,
     email: String,
@@ -270,8 +268,6 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
         password: hashedPassword,
         age: req.body.age,
         userType: req.body.userType,
-        branch: req.body.branch,
-        division: req.body.division,
         emergencyContact: {
           name: req.body.emergencyName,
           email: req.body.emergencyEmail,
@@ -504,18 +500,18 @@ app.post('/sendSOS', checkAuthenticated, async (req, res) => {
     const patientName = user.username;
     const patientContact = user.phone;
 
-    // Send SMS using Twilio
-    await client.messages.create({
-      body: `THIS IS AN SOS MESSAGE BY YARN, from ${patientName}. Please contact immediately at ${patientContact}.`,
-      from: '+15169812980', // Your Twilio phone number
-      to: emergencyContactPhone
-    });
+    // // Send SMS using Twilio
+    // await client.messages.create({
+    //   body: `THIS IS AN SOS MESSAGE BY YARN, from ${patientName}. Please contact immediately at ${patientContact}.`,
+    //   from: '+15169812980', // Your Twilio phone number
+    //   to: emergencyContactPhone
+    // });
 
     console.log('SOS sent successfully.');
     // Set success flash message
     req.flash('success', 'SOS request sent successfully.');
-
     // Redirect to the home page or any other relevant page
+
     res.redirect('/');
   } catch (error) {
     console.error('Error sending SOS:', error);
@@ -591,9 +587,9 @@ app.post('/edit-profile', checkAuthenticated, async (req, res) => {
     user.username = req.body.name;
     user.age = req.body.age;
     user.email = req.body.email;
-    user.branch = req.body.branch; // Update branch
-    user.division = req.body.division; // Update division
-
+    user.emergencyContact.name = req.body.emergencyName;
+    user.emergencyContact.email = req.body.emergencyEmail;
+    user.emergencyContact.phone = req.body.emergencyPhone;
     // Save the updated user to MongoDB
     await user.save();
 
@@ -630,29 +626,6 @@ app.delete('/delete-account', checkAuthenticated, async (req, res) => {
   }
 });
 // Route for handling the profile update (POST request)
-app.post('/edit-profile', checkAuthenticated, async (req, res) => {
-  try {
-    const user = await req.user; // Assuming the user is authenticated
-
-    // Update user details based on the form input
-    user.username = req.body.name;
-    user.age = req.body.age;
-    user.email = req.body.email;
-    user.branch = req.body.branch; // Update branch
-    user.division = req.body.division; // Update division
-
-    // Save the updated user to MongoDB
-    await user.save();
-
-    // Redirect the user to the profile page or any other relevant page
-    req.flash('success', 'Profile updated successfully.');
-    res.redirect('/edit-profile'); // Replace 'profile' with the actual route for viewing the profile
-  } catch (error) {
-    console.error('Error updating profile:', error);
-    req.flash('error', 'An error occurred while updating the profile.');
-    res.redirect('/edit-profile'); // Redirect back to the edit profile page in case of an error
-  }
-});
 
 
 app.get('/statistics', checkAuthenticated, (req, res) => {

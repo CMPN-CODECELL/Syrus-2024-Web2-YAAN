@@ -84,10 +84,6 @@
         </h2>
         <h2 class="profile-item">Age: <%= user.age %>
         </h2>
-        <h2 class="profile-item">Branch: <%= user.branch %>
-        </h2>
-        <h2 class="profile-item">Division: <%= user.division %>
-        </h2>
         <h2 class="profile-item">Highscore: <%= ((scores)=> (scores.reduce((maxScore, currentScore) =>
             currentScore.score > maxScore ? currentScore.score : maxScore, 0)))(user.scores) %></h2>
         <% function tottimeplayed(scores) { %>

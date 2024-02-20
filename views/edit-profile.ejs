@@ -31,7 +31,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-         
+
           <li class="nav-item">
             <a class="nav-link" href="/statistics" style="color:white;">Statistics</a>
           </li>
@@ -88,13 +88,15 @@
         <input type="email" id="email" name="email" value="<%= user.email %>" required
           style="width: 100%; padding: 8px; margin-bottom: 10px;">
 
-        <label for="branch">Branch:</label>
-        <input type="text" id="branch" name="branch" value="<%= user.branch %>"
+
+        <label for="emergencyName">Emergency Contact Name:</label>
+        <input type="text" id="emergencyName" name="emergencyName" value="<%= user.emergencyContact.name %>"
           style="width: 100%; padding: 8px; margin-bottom: 10px;">
 
-        <label for="division">Division:</label>
-        <input type="text" id="division" name="division" value="<%= user.division %>"
+        <label for="emergencyPhone">Emergency Contact Phone:</label>
+        <input type="tel" id="emergencyPhone" name="emergencyPhone" value="<%= user.emergencyContact.phone %>"
           style="width: 100%; padding: 8px; margin-bottom: 10px;">
+
 
         <!-- Add other fields as needed -->
 
