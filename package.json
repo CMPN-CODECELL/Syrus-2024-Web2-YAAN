@@ -4,11 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-
     "build": "node server.js",
-    "prebuild": "npm run lint", 
+    "prebuild": "npm run lint",
     "lint": "eslint src",
-  
     "devStart": "nodemon server.js"
   },
   "author": "",
@@ -22,10 +20,11 @@
     "method-override": "^3.0.0",
     "mongoose": "^8.0.1",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "twilio": "^4.22.0"
   },
   "devDependencies": {
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.4",
     "nodemon": "^3.0.1"
   }
 }

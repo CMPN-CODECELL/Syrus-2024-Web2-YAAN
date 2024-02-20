@@ -7,7 +7,7 @@ function initialize(passport, getUserByEmail, getUserById) {
 
     // console.log("baba")
     // console.log(user);
-    
+
 
     if (user == null) {
       console.log("No user with that email");
