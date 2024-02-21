@@ -78,50 +78,29 @@
     </nav>
 
     <div class="px-4 mt-4">
-        <div class="col">
-            <button class="btn btn-primary btn-hover" onclick="showContent('content1')">Write</button>
-            <button class="btn btn-primary btn-hover" onclick="showContent('content2')">Track</button>
-            <button class="btn btn-primary btn-hover" onclick="showContent('content3')">Entries</button>
+        <div class="col" style="margin-right:10%;">
+            <button class="btn btn-primary btn-hover" style="padding:15px; padding-right:40px; padding-left:40px;"
+                onclick="showContent('content1')">Write</button>
+            <button class="btn btn-primary btn-hover" style="padding:15px; padding-right:40px; padding-left:40px;"
+                onclick="showContent('content2')">Track</button>
+            <button class="btn btn-primary btn-hover" style="padding:15px; padding-right:40px; padding-left:40px;"
+                onclick="showContent('content3')">Entries</button>
         </div>
     </div>
 
     <!-- write section -->
-    <div id="content1" class="content p-4 mt-4 ">
+    <!-- write section -->
+    <div id="content1" class="content p-4 mt-4">
         <label for="content" style="font-size: 20px;"><strong>Content:</strong></label><br>
-        <div class="row mt-4  ">
+        <div class="row mt-4">
             <div class="col-md-6 text-left">
                 <form action="/journal" method="POST" onsubmit="return confirmJournalSubmission()">
-
                     <textarea id="content" name="content" rows="12" cols="50" style="width: 100%;"></textarea><br>
             </div>
             <div class="col-md-6 text-left">
                 <label for="mood" style="font-size: 20px;"><strong>Mood:</strong></label><br>
 
-                <!-- <label class="checkbox mt-4">Happy
-                    <input type="checkbox" id="mood1" name="mood" value="Happy">
-                    <span class="checkmark"></span>
-                </label>
-
-                <label class="checkbox">Sad
-                    <input type="checkbox" id="mood2" name="mood" value="Sad">
-                    <span class="checkmark"></span>
-                </label>
-
-                <label class="checkbox">Angry
-                    <input type="checkbox" id="mood3" name="mood" value="Angry">
-                    <span class="checkmark"></span>
-                </label>
-
-                <label class="checkbox">Excited
-                    <input type="checkbox" id="mood4" name="mood" value="Excited">
-                    <span class="checkmark"></span>
-                </label>
-
-                <label class="checkbox">Calm
-                    <input type="checkbox" id="mood5" name="mood" value="Calm">
-                    <span class="checkmark"></span>
-                </label> -->
-
+                <!-- Custom radio buttons container -->
                 <div id="radioButtons" class="mt-2">
                     <label><input type="radio" name="mood" value="Happy"> Happy 😀</label><br>
                     <label><input type="radio" name="mood" value="Sad"> Sad 😢</label><br>
@@ -132,50 +111,58 @@
 
             </div>
         </div>
-        <button type="submit" class="btn btn-primary ">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
     <script id="userData" data-user='<%- JSON.stringify(user) %>'></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- track section -->
+
+
     <div id="content2" class="p-4 content mt-4">
-        <div class="journal-track" style="display: flex;">
-            <!-- Table -->
-            <table class="table" style="width: 50%;">
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Mood</th>
-                    </tr>
-                </thead>
-                <tbody id="journalTableBody">
-                    <% if (user.journal && user.journal.length> 0) { %>
-                        <% user.journal.reverse().forEach(entry=> {
-                            const entryDate = new Date(entry.timestamp);
-                            const entryDateFormatted = `${entryDate.getDate()} ${entryDate.toLocaleString('default', {
-                            month: 'long' })} ${entryDate.getFullYear()}`;
-                            %>
-                            <tr>
-                                <td>
-                                    <%= entryDateFormatted %>
-                                </td>
-                                <td>
-                                    <%= entry.mood %>
-                                </td>
-                            </tr>
-                            <% }); %>
-                                <% } else { %>
-                                    <tr>
-                                        <td colspan="2">No entries found.</td>
-                                    </tr>
-                                    <% } %>
-                </tbody>
-            </table>
-            <!-- Chart -->
-            <canvas id="moodChart" style="width: 50%;"></canvas>
+        <div class="journal-track">
+            <div class="column" style="width: 40%;">
+                <!-- Table -->
+                <table class="table" style="width: 60%;">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Mood</th>
+                        </tr>
+                    </thead>
+                    <tbody id="journalTableBody">
+                        <% if (user.journal && user.journal.length> 0) { %>
+                            <% user.journal.reverse().forEach(entry=> {
+                                const entryDate = new Date(entry.timestamp);
+                                const entryDateFormatted = `${entryDate.getDate()} ${entryDate.toLocaleString('default',
+                                {
+                                month: 'long' })} ${entryDate.getFullYear()}`;
+                                %>
+                                <tr>
+                                    <td>
+                                        <%= entryDateFormatted %>
+                                    </td>
+                                    <td>
+                                        <%= entry.mood %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="2">No entries found.</td>
+                                        </tr>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="column" style="width: 50%;">
+                <!-- Chart -->
+                <canvas id="moodChart" style="width: 100%;"></canvas>
+            </div>
         </div>
     </div>
+
 
     <!-- track section -->
     <!-- <div id="content2" class="p-4 content mt-4">

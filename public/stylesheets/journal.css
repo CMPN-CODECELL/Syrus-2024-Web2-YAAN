@@ -85,15 +85,33 @@ textarea {
     gap: 20px;
 }
 
-.journal-entry,
-.journal-track {
+.journal-entry {
     background-color: rgba(255, 255, 255, 0.8);
     /* Background color with opacity */
     padding: 20px;
+    
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     /* Box shadow */
 }
+
+.journal-track{
+    
+        background-color: rgba(255, 255, 255, 0.8);
+        /* Background color with opacity */
+        padding: 20px;
+        /* width: 70%; */
+        display: flex;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Box shadow */
+
+}
+
+
+/* .column {
+    width: 50%;
+} */
 
 .entry-details {
     margin-bottom: 10px;

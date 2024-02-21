@@ -125,10 +125,10 @@ body {
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
-canvas {
+/* canvas {
     max-width: 100%;
     height: auto;
-}
+} */
 .selection{
   display: flex;
   flex-direction: row;
@@ -243,3 +243,10 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.graphbtn{
+  display: flex;
+  gap: 5%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
