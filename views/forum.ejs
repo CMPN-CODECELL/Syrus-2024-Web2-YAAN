@@ -10,131 +10,8 @@
   <title>Forum</title>
   <link rel="icon" type="image/x-icon" href="/assets/yarnlogo.ico">
   <style>
-    .forum-container {
-      background-color: rgba(255, 255, 255, 0.6);
-      /* White with 80% opacity */
-      /* padding: 20px; */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      /* Shadow effect */
-      background-attachment: fixed;
-      background-size: cover;
-    }
-
-    .forum-post {
-      border: 1px solid #bdb9b9;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      background-color: #ffffff;
-      /* Set background color for post container */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      /* Add box shadow for depth */
-    }
-
-    .post-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      font-family: 'Bevan', serif;
-    }
-
-    .profile-pic {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-
-    .post-date {
-      font-size: 14px;
-      color: #275a9c;
-    }
-
-    .post-title {
-      margin-bottom: 10px;
-      font-weight: 900;
-      font-family: 'Bevan', serif;
-    }
-
-    .post-description {
-      margin-bottom: 10px;
-      font-family: 'Bevan', serif;
-    }
-
-    .post-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .tags {
-      font-size: 14px;
-      color: #6365cc;
-    }
-
-    .actions button {
-      margin-left: 10px;
-    }
-
-    .comment-btn {
-      border-color: grey;
-    }
-
-    .comment-form {
-      background-color: rgba(255, 255, 255, 0.8);
-      /* Set background color to white with 80% opacity */
-      padding: 20px;
-      /* Add padding for better readability */
-      border-radius: 10px;
-      /* Add border radius for rounded corners */
-    }
-
-    .comment-form textarea {
-      width: 100%;
-      /* Set the width to 100% of its container */
-      height: 150px;
-      /* Set the height to 150 pixels */
-      resize: vertical;
-      /* Allow vertical resizing */
-    }
-
-    .comment-item {
-      list-style: none;
-      border-bottom: 1px solid #ccc;
-      /* Add a border to separate each comment */
-      padding: 10px 0;
-      /* Add some padding for spacing */
-    }
-
-    .comment-header {
-      display: flex;
-      align-items: center;
-    }
-
-    .user-icon {
-      margin-right: 10px;
-      /* Adjust margin as needed */
-    }
 
 
-
-    .username {
-      font-weight: bold;
-      /* Make the username bold if desired */
-    }
-
-    .comment-content {
-      margin-top: 5px;
-      /* Add some space between user info and comment content */
-      text-align: justify;
-      /* Justify the text content */
-    }
   </style>
 </head>
 
@@ -194,110 +71,135 @@
         </form>
       </div>
   </nav>
-
-  <div class="forum-container p-4">
-    <h3>Posts:</h3>
-    <% if (forums.length> 0) { %>
-      <div class="existing-posts">
-        <% forums.forEach(forum=> { %>
-          <div class="forum-post">
-            <!-- Your existing post content here -->
-            <div class="post-header">
-              <div class="user-info">
-                <!-- <img src="<%= forum.createdBy.profilePic %>" alt="User Profile Pic" class="profile-pic"> -->
-                <svg class="profile-pic" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-person-circle" viewBox="0 0 16 16">
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                  <path fill-rule="evenodd"
-                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                </svg>
-                <span class="username">
-                  <%= forum.createdBy.username %>
-                </span>
-              </div>
-              <div class="post-date">
-                <%= forum.createdAt.toDateString() %>
-              </div>
-            </div>
-            <h3 class="post-title">
-              <%= forum.heading %>
-            </h3>
-            <p class="post-description">
-              <%= forum.description %>
-            </p>
-            <div class="post-info">
-              <div class="tags">
-                <p>
-                  <% forum.tags.forEach(tag=> { %> #<%= tag %>
-                      <% }) %>
-                </p>
-              </div>
-              <div class="actions">
-                <button class="like-btn btn btn-danger">Like</button>
-                <button class="comment-btn add-comment-btn  btn btn-outline-dark">Comment</button>
-              </div>
-            </div>
-
-            <!-- Comment form -->
-            <div class="comment-section" style="display: none;">
-              <% if (forum.comments.length> 0) { %>
-                <h3>Comments:</h3>
-                <ul class="comment-list">
-                  <% forum.comments.forEach(comment=> { %>
-                    <li class="comment-item">
-                      <!-- <div class="comment-header">
-            <div class="user-icon"> 
-            
-            </div>
-            <div class="user-info">
-              <span class="username"><%= comment.author %></span>
-              <span class="comment-date"><%= comment.createdAt.toDateString() %></span>
-            </div>
-          </div> -->
-                      <div class="post-header">
-                        <div class="user-info">
-                          <!-- <img src="<%= forum.createdBy.profilePic %>" alt="User Profile Pic" class="profile-pic"> -->
-                          <svg class="profile-pic" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                            fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                            <path fill-rule="evenodd"
-                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                          </svg>
-                          <span class="username">
-                            <%= comment.author %>
-                          </span>
-                        </div>
-                        <div class="post-date">
-                          <%= comment.createdAt.toDateString() %>
-                        </div>
-                      </div>
-                      <div class="comment-content">
-                        <%= comment.content %>
-                      </div>
-                    </li>
-                    <% }) %>
-                </ul>
-                <% } %>
-            </div>
-
-
-
-            <!-- <button class="comment-btn add-comment-btn btn btn-outline-dark">Add Comment</button> -->
-            <form class="comment-form" action="/comment" method="POST" style="display: none;">
-              <input type="hidden" name="forumId" value="<%= forum._id %>">
-              <textarea name="comment" placeholder="Type your comment here..." required></textarea><br>
-              <button type="submit" class="btn btn-outline-dark">Post</button>
-            </form>
-          </div>
+  <ydiv class="container">
+  <div class="existing-posts">
+    <div style="color: #297eb8; text-align: center; font-weight: bold; font-size: 28px;">Posts:</div>
+    <% if (forums.length > 0) { %>
+        <% forums.reverse().forEach(forum => { %>
+            <div class="forum-post">
+              
+                  <!-- ... existing post content ... -->
+                  <div class="post-header">
+                    <!-- ... (post header content) ... -->
+                    <div class="user-info">
+                      <!-- <img src="<%= forum.createdBy.profilePic %>" alt="User Profile Pic" class="profile-pic"> -->
+                      <svg class="profile-pic" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                        <path fill-rule="evenodd"
+                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                      </svg>
+                      <span class="username">
+                        <%= forum.createdBy.username %>
+                      </span>
+                    </div>
+                    <div class="post-date">
+                      <%= forum.createdAt.toDateString() %>
+                    </div>
+                  </div>
+                  <div class="post-title">
+                    <%= forum.heading %>
+                  </div>
+                  <p class="post-description">
+                    <%= forum.description %>
+                  </p>
+                  <div class="post-info">
+                    <!-- ... (post info content) ... -->
+                    
+      <div class="tags">
+        <p>
+          <% forum.tags.reverse().forEach(tag=> { %> #<%= tag %>
+              <% }) %>
+        </p>
       </div>
-      <% }) %>
-  </div>
-  <% } else { %>
-    <p>No posts in the forum.</p>
+      <div class="actions">
+        <button class="like-btn btn btn-danger">Like</button>
+        <button class="comment-btn add-comment-btn  btn btn-outline-dark">Comment</button>
+      </div>
+      
+                  </div>
+                  <form class="comment-form" action="/comment" method="POST" style="display: none;">
+                    <input type="hidden" name="forumId" value="<%= forum._id %>">
+                    <textarea name="comment" placeholder="Type your comment here..." required style="height: 60px;"></textarea><br>
+                    <button type="submit" class="btn btn-outline-dark">Post</button>
+                  </form>
+                  <div class="comment-section" style="display: none;">
+                    <% if (forum.comments.length> 0) { %>
+                      <div style="color: #297eb8; text-align: center; font-weight: bold; font-size: 20px;">Comments:</div>
+                      <ul class="comment-list">
+                        <% forum.comments.reverse().forEach(comment=> { %>
+                          <li class="comment-item">
+                            <!-- <div class="comment-header">
+                  <div class="user-icon"> 
+                  
+                  </div>
+                  <div class="user-info">
+                    <span class="username"><%= comment.author %></span>
+                    <span class="comment-date"><%= comment.createdAt.toDateString() %></span>
+                  </div>
+                </div> -->
+                            <div class="post-header">
+                              <div class="user-info">
+                                <!-- <img src="<%= forum.createdBy.profilePic %>" alt="User Profile Pic" class="profile-pic"> -->
+                                <svg class="profile-pic" xmlns="http://www.w3.org/2000/svg" width="16" height="16" color="grey"
+                                  fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                  <path fill-rule="evenodd"
+                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                                </svg>
+                                <span class="username">
+                                  <%= comment.author %>
+                                </span>
+                              </div>
+                              <div class="post-date">
+                                <%= comment.createdAt.toDateString() %>
+                              </div>
+                            </div>
+                            <div class="comment-content">
+                              <%= comment.content %>
+                            </div>
+                          </li>
+                          <% }) %>
+                      </ul>
+                      <% } %>
+                  </div>
+      
+      
+      
+                  <!-- <button class="comment-btn add-comment-btn btn btn-outline-dark">Add Comment</button> -->
+                 
+                
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No posts in the forum.</p>
     <% } %>
-      </div>
+</div>
 
-      <button id="eventsfloating">
+<div class="create-forum">
+  <div style="color: #297eb8; text-align: center; font-weight: bold; font-size: 28px;">Create Forum:</div>
+  <form action="/forum" method="POST">
+      <label for="heading" style="color: #297eb8;  font-weight: bold; font-size: 20px;">Heading:</label>
+      <input type="text" id="heading" name="heading" required>
+
+      <label for="description" style="color: #297eb8;  font-weight: bold; font-size: 20px; ">Description:</label>
+      <textarea id="description" name="description" style="width: -webkit-fill-available; border-radius: 8px; height: 120px; border: 2px solid #3498db;" required></textarea>
+
+      <label for="tags" style="color: #297eb8;  font-weight: bold; font-size: 20px;">Tags (comma-separated):</label>
+      <input type="text" id="tags" name="tags" required>
+
+      <button type="submit" style="display: flex; background-color: #3498db; border: none;  font-weight: bold;   padding: 11px; color: #fff;
+    margin-left: 30%; width: max-content; border-radius: 5px;">Create Post</button>
+  </form>
+</div>
+</div>
+
+
+
+
+  
+
+      <!-- <button id="eventsfloating">
         <div class="logo_title" style=" display: flex; flex-direction: row;">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle"
             viewBox="0 0 16 16">
@@ -313,33 +215,27 @@
         <button id="popovertxt">
           <div style="color: white; text-align: center; font-weight: bold; font-size: 20px;">Create Forum:</div>
           <form action="/forum" method="POST">
-            <label for="heading">Heading:</label><br>
-            <input type="text" id="heading" name="heading" required><br>
+            <label for="heading">Heading:</label>
+            <input type="text" id="heading" name="heading" required>
 
-            <label for="description">Description:</label><br>
+            <label for="description">Description:</label>
             <textarea id="description" name="description" style="width: -webkit-fill-available; border-radius: 8px;"
-              required></textarea><br>
+              required></textarea>
 
-            <label for="tags">Tags (comma-separated):</label><br>
-            <input type="text" id="tags" name="tags" required><br>
+            <label for="tags">Tags (comma-separated):</label>
+            <input type="text" id="tags" name="tags" required>
 
 
             <button type="submit" style="    display: flex;
         background-color: #ffffff;
         color: #297eb8;
-        padding: 6px;
-        border: none;
-        justify-content: center;
-        flex-direction: column;
-        border-radius: 8px;
-        margin-top: 12px;
-        margin-left: 25%;">Create Event</button>
+        padding: 6px;">Create Event</button>
           </form>
 
 
         </button>
 
-      </div>
+      </div> -->
 
 
 

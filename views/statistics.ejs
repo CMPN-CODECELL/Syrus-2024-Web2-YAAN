@@ -1,161 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/statistics.css"> <!-- Adjust the path accordingly -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script> <!-- Include Chart.js Date-FNS adapter -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/statistics.css"> <!-- Adjust the path accordingly -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"></script>
 
-    <title>Statistics</title>
-    <link rel="icon" type="image/x-icon" href="/assets/yarnlogo.ico">
+  <title>Statistics</title>
+  <link rel="icon" type="image/x-icon" href="/assets/yarnlogo.ico">
 </head>
 
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
- 
-  <nav class="navbar navbar-expand-lg" style="background-color: #3498db;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/" style="color:white; padding-bottom: 0rem;">
-        <img src="/assets/yarnlogo.png" href="/" alt="Logo" width="40" height="40"
-          class="d-inline-block align-text-center">YARN
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-         
-          <li class="nav-item">
-            <a class="nav-link" href="/statistics" style="color:white;">Statistics</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/add-doctor" style="color:white;">Add Doc</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/journal" style="color:white;">Journal</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/forum" style="color:white;">Forum</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/todo" style="color:white;">Calender</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-              style="color:white;">
-              Account
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/edit-profile">Edit Profile</a></li>
-              <li>
-                <a class="dropdown-item" href="/logout"
-                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log
-                  Out</a>
-                <form id="logout-form" action="/logout?_method=DELETE" method="POST" style="display: none;"></form>
-              </li>
-              <li><a class="dropdown-item" href="#" onclick="deleteAccount()">Delete Account</a></li>
-            </ul>
-          </li>
-        </ul>
-        <!-- Add SOS button -->
-        <form action="/sendSOS" method="post">
-          <button type="submit" id="sosButton" class="btn btn-danger mx-2">SOS</button>
-        </form>
-      </div>
-  </nav>
-
-    
-   
-    <script id="userData" data-user='<%- JSON.stringify(user) %>'></script>
-    <div class="title">
-      <% if (typeof isDoctor !== 'undefined' && isDoctor) { %>
-        <h3 style="margin-top: 1%;">Hi Doctor, this is the statistics of your patient <%= user.username %>.</h3>
-      <% } else { %>
-        <h3 style="margin-top: 1%;">Welcome, <%= user.username %>. Here are your statistics.</h3>
-      <% } %>
+  <div id="chartContainer">
+    <div class="chart-container" style="display: none;">
+      <canvas id="memoryCardChart" width="400px" height="400px"></canvas>
     </div>
-
-    <!-- <button id="downloadCsvBtn" class="btn btn-primary mt-3">Download CSV for Last Game Range of Movement</button> -->
-
-    
-    <div class="stats d-flex align-items-start">
-    <div class="card" style=" background: linear-gradient(45deg, #3498db, #935dab); 
-    border-radius: 10px;">
-      <h3 class="profile-title">Statistics</h3>
-      <div class="profile-info">
-        <h2 class="profile-item">Highest score: <span id="highScore"></span></h2>
-        <h2 class="profile-item">Total time spent: <span id="totalTime"></span></h2>
-        <h2 class="profile-item"> Total games played: <%= user.scores.length %> </h2>
-        <h2 class="profile-item">Average score: <span id="averageScore"></span></h2>
-        <h2 class="profile-item">Current streak: <span id="streak"></span></h2>
-        <h2 class="profile-item">Your Awards: <span id="Awards_num"></span></h2>
-        <h2 class="profile-item"><span id="Awards_pic">
-          <img src="/assets/1week.png" alt ="1 week streak award" title="1 week streak award" width="70" height="70">
-          <img src="/assets/1month.png" alt="1 month streak award" title="1 month streak award" width="70" height="70">
-        </span></h2>
-        <h2 class="profile-item"><span id="playwarning"></span></h2>
-
-  
-      </div>
+    <div class="chart-container" style="display: none;">
+      <canvas id="sudokuChart" width="400" height="400"></canvas>
     </div>
   </div>
 
-    <!-- Dropdowns for selecting chart type and time range -->
-<div class="selection">
-<div class="mb-3">
-  <label for="chartTypeDropdown" class="form-label" id="droptitle">Select Chart Type:</label>
-  <select class="form-select" id="chartTypeDropdown" style="width: max-content;">
-      <option value="hand">Hand</option>
-      <option value="pose">Pose</option>
-  </select>
-</div>
+  <button id="createMemoryCardGraphBtn">Create Memory Card Graph</button>
+  <button id="createSudokuGraphBtn">Create Sudoku Graph</button>
 
-<div class="mb-3">
-  <label for="timeRangeDropdown" class="form-label" id="droptitle">Select Time Range:</label>
-  <select class="form-select" id="timeRangeDropdown" style="width: max-content;">
-      <option value="day">Day</option>
-      <option value="month">Month</option>
-      <option value="year">Year</option>
-  </select>
-</div>
-</div>
-
-<!-- button -->
-<button id="displayChartBtn" class="btn">Display Chart</button>
-
-
-<div id="chartContainer" style="display:none;" class="mt-4">
-  <!-- Charts will be added here dynamically -->
-  <div class="charts">
-  <div class="card">
-    <canvas id="scoreChart1" width="400" height="300"></canvas>
-</div>
-<div class="card">
-  <canvas id="scoreChart2" width="400" height="300"></canvas>
-</div>
-</div>
-</div>
-
-
-    <!-- floatingbtn csv containing the chart -->
-    <button id="downloadCsvBtn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-filetype-csv" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM3.517 14.841a1.13 1.13 0 0 0 .401.823q.195.162.478.252.284.091.665.091.507 0 .859-.158.354-.158.539-.44.187-.284.187-.656 0-.336-.134-.56a1 1 0 0 0-.375-.357 2 2 0 0 0-.566-.21l-.621-.144a1 1 0 0 1-.404-.176.37.37 0 0 1-.144-.299q0-.234.185-.384.188-.152.512-.152.214 0 .37.068a.6.6 0 0 1 .246.181.56.56 0 0 1 .12.258h.75a1.1 1.1 0 0 0-.2-.566 1.2 1.2 0 0 0-.5-.41 1.8 1.8 0 0 0-.78-.152q-.439 0-.776.15-.337.149-.527.421-.19.273-.19.639 0 .302.122.524.124.223.352.367.228.143.539.213l.618.144q.31.073.463.193a.39.39 0 0 1 .152.326.5.5 0 0 1-.085.29.56.56 0 0 1-.255.193q-.167.07-.413.07-.175 0-.32-.04a.8.8 0 0 1-.248-.115.58.58 0 0 1-.255-.384zM.806 13.693q0-.373.102-.633a.87.87 0 0 1 .302-.399.8.8 0 0 1 .475-.137q.225 0 .398.097a.7.7 0 0 1 .272.26.85.85 0 0 1 .12.381h.765v-.072a1.33 1.33 0 0 0-.466-.964 1.4 1.4 0 0 0-.489-.272 1.8 1.8 0 0 0-.606-.097q-.534 0-.911.223-.375.222-.572.632-.195.41-.196.979v.498q0 .568.193.976.197.407.572.626.375.217.914.217.439 0 .785-.164t.55-.454a1.27 1.27 0 0 0 .226-.674v-.076h-.764a.8.8 0 0 1-.118.363.7.7 0 0 1-.272.25.9.9 0 0 1-.401.087.85.85 0 0 1-.478-.132.83.83 0 0 1-.299-.392 1.7 1.7 0 0 1-.102-.627zm8.239 2.238h-.953l-1.338-3.999h.917l.896 3.138h.038l.888-3.138h.879z"/>
-      </svg>
-  
-    </button>
-  
-    <div id="popover">
-      <button id="popovertxt">Download CSV for Last Game Range of Movement</button>
-    </div>
-
+  <script id="userData" data-user='<%- JSON.stringify(user) %>'></script>
 
   <script src="/scripts/statistics.js"></script>
-  <script src="/scripts/delAcc.js"></script>
 </body>
+
 </html>

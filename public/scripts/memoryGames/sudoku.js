@@ -704,6 +704,9 @@ function checkButtonClick() {
             pauseTimer = true;
             document.getElementById("game-difficulty").innerText = "Solved";
             clearInterval(intervalId);
+
+            console.log("timer", timer);
+            gameOver(timer);
             alert("Congrats, You solved it.");
         } else if (errors === 0 && currects === 0) {
             alert(
@@ -776,7 +779,9 @@ function hintButtonClick() {
             pauseTimer = true;
             document.getElementById("game-difficulty").innerText = "Solved";
             clearInterval(intervalId);
+
             alert("Congrats, You solved it.");
+
         } else {
             // add one minute to the stopwatch as a cost for given hint
             timer += 60;
@@ -952,6 +957,7 @@ function solveButtonClick() {
     switch (result) {
         case 0:
             alert("SOLVED");
+
             break;
         case 1:
             alert("This grid is already solved");
@@ -1000,4 +1006,31 @@ function isUniqueButtonClick() {
 
     //display the result
     document.getElementById("game-difficulty").innerText = unique ? "Yes" : "No";
+}
+
+
+
+
+function gameOver(timer) {
+    clearInterval(timer); // Stop the timer
+    const gameOverData = {
+        timer: timer,
+    };
+    console.log(gameOverData);
+
+    // Send a POST request to the server with the game over data
+    fetch("/sudoku-game-over", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(gameOverData),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data); // Log the response from the server (optional)
+        })
+        .catch((error) => {
+            console.error("Error sending game over data:", error);
+        });
 }

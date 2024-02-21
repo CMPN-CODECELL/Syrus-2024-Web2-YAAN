@@ -170,7 +170,8 @@ video {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 30%;
+
     gap: 50px; /* Adjust the spacing between radio buttons and labels */
 }
 #yearOfRegistration{

@@ -43,15 +43,16 @@ const userSchema = new mongoose.Schema({
   connections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   connectionRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   awards: [String],
-  scores: [{
-    score: Number,
-    gameType: String,
-    difficulty: String,
-    timePerrun: Number,
-    movesPerrun: Number,
-    rangeOfMovement: [Number],
-    timestamp: { type: Date, default: Date.now }
-  }],
+  games: { memoryCards: [{ mode: String, moves: Number, time: Number, timestamp: { type: Date, default: Date.now } }], sudoku: [{ time: Number, difficulty: String, timestamp: { type: Date, default: Date.now } }], minimi: [{ score: Number, time: Number }] },
+  // scores: [{
+  //   score: Number,
+  //   gameType: String,
+  //   difficulty: String,
+  //   timePerrun: Number,
+  //   movesPerrun: Number,
+  //   rangeOfMovement: [Number],
+  //   timestamp: { type: Date, default: Date.now }
+  // }],
   // Doctor-specific fields
   qualification: String,
   nmcRegistrationNo: String,
@@ -307,6 +308,48 @@ app.delete('/logout', (req, res) => {
   });
 });
 
+app.post('/memoryCard-game-over', checkAuthenticated, async (req, res) => {
+  try {
+    const currentUser = await req.user;
+    console.log("Received game over data:", req.body);
+    const { mode, moves, time } = req.body; // Extract data from the request body
+    console.log(req.body);
+    // Assuming currentUser has a 'games.memoryCards' array field
+    currentUser.games.memoryCards.push({
+      mode,
+      moves,
+      time
+    });
+
+    // Save the updated user document
+    await currentUser.save();
+
+    res.status(200).json({ success: true, message: 'Score updated successfully' });
+  } catch (error) {
+    console.error('Error updating score:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+
+
+app.post('/sudoku-game-over', checkAuthenticated, async (req, res) => {
+  try {
+    const currentUser = await req.user;
+    console.log("Received game over data:", req.body);
+    const time = req.body.timer; // Extract data from the request body
+    console.log(req.body);
+    // Assuming currentUser has a 'games.memoryCards' array field
+    currentUser.games.sudoku.push({ time, difficulty: "none" });
+
+    // Save the updated user document
+    await currentUser.save();
+
+    res.status(200).json({ success: true, message: 'Score updated successfully' });
+  } catch (error) {
+    console.error('Error updating score:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
 
 app.get('/doctor-home', checkAuthenticated, async (req, res) => {
   try {

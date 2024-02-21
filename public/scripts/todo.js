@@ -17,6 +17,26 @@ const calendar = document.querySelector(".calendar"),
   addEventTo = document.querySelector(".event-time-to "),
   addEventSubmit = document.querySelector(".add-event-btn ");
 
+document.addEventListener('DOMContentLoaded', function () {
+  const medicineFields = document.getElementById('medicine-fields');
+  const taskFields = document.getElementById('task-fields');
+
+  document.querySelectorAll('input[name="event-type"]').forEach((elem) => {
+    elem.addEventListener('change', function () {
+      if (this.value === 'medicine') {
+        medicineFields.style.display = 'block';
+        taskFields.style.display = 'none';
+      } else if (this.value === 'task') {
+        medicineFields.style.display = 'none';
+        taskFields.style.display = 'block';
+      }
+    });
+  });
+});
+// addEventBtn.addEventListener("click", () => {
+//   addEventWrapper.classList.toggle("active");
+// });
+
 let today = new Date();
 let activeDay;
 let month = today.getMonth();
@@ -280,8 +300,6 @@ addEventTitle.addEventListener("input", (e) => {
 
 function defineProperty() {
   var osccred = document.createElement("div");
-  osccred.innerHTML =
-    "A Project By <a href='https://www.youtube.com/channel/UCiUtBDVaSmMGKxg1HYeK-BQ' target=_blank>Open Source Coding</a>";
   osccred.style.position = "absolute";
   osccred.style.bottom = "0";
   osccred.style.right = "0";
@@ -299,87 +317,171 @@ function defineProperty() {
 defineProperty();
 
 //allow only time in eventtime from and to
-addEventFrom.addEventListener("input", (e) => {
-  addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
-  if (addEventFrom.value.length === 2) {
-    addEventFrom.value += ":";
-  }
-  if (addEventFrom.value.length > 5) {
-    addEventFrom.value = addEventFrom.value.slice(0, 5);
-  }
-});
+// addEventFrom.addEventListener("input", (e) => {
+//   addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
+//   if (addEventFrom.value.length === 2) {
+//     addEventFrom.value += ":";
+//   }
+//   if (addEventFrom.value.length > 5) {
+//     addEventFrom.value = addEventFrom.value.slice(0, 5);
+//   }
+// });
 
-addEventTo.addEventListener("input", (e) => {
-  addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
-  if (addEventTo.value.length === 2) {
-    addEventTo.value += ":";
-  }
-  if (addEventTo.value.length > 5) {
-    addEventTo.value = addEventTo.value.slice(0, 5);
-  }
-});
+// addEventTo.addEventListener("input", (e) => {
+//   addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
+//   if (addEventTo.value.length === 2) {
+//     addEventTo.value += ":";
+//   }
+//   if (addEventTo.value.length > 5) {
+//     addEventTo.value = addEventTo.value.slice(0, 5);
+//   }
+// });
 
-//function to add event to eventsArr
+// //function to add event to eventsArr
+// addEventSubmit.addEventListener("click", () => {
+//   const eventTitle = addEventTitle.value;
+//   const eventTimeFrom = addEventFrom.value;
+//   const eventTimeTo = addEventTo.value;
+//   if (eventTitle === "" || eventTimeFrom === "" || eventTimeTo === "") {
+//     alert("Please fill all the fields");
+//     return;
+//   }
+
+
+
+//   //check correct time format 24 hour
+//   const timeFromArr = eventTimeFrom.split(":");
+//   const timeToArr = eventTimeTo.split(":");
+//   if (
+//     timeFromArr.length !== 2 ||
+//     timeToArr.length !== 2 ||
+//     timeFromArr[0] > 23 ||
+//     timeFromArr[1] > 59 ||
+//     timeToArr[0] > 23 ||
+//     timeToArr[1] > 59
+//   ) {
+//     alert("Invalid Time Format");
+//     return;
+//   }
+
+//   const timeFrom = convertTime(eventTimeFrom);
+//   const timeTo = convertTime(eventTimeTo);
+
+//   //check if event is already added
+//   let eventExist = false;
+//   eventsArr.forEach((event) => {
+//     if (
+//       event.day === activeDay &&
+//       event.month === month + 1 &&
+//       event.year === year
+//     ) {
+//       event.events.forEach((event) => {
+//         if (event.title === eventTitle) {
+//           eventExist = true;
+//         }
+//       });
+//     }
+//   });
+//   if (eventExist) {
+//     alert("Event already added");
+//     return;
+//   }
+//   const newEvent = {
+//     title: eventTitle,
+//     time: timeFrom + " - " + timeTo,
+//   };
+//   console.log(newEvent);
+//   console.log(activeDay);
+//   let eventAdded = false;
+//   if (eventsArr.length > 0) {
+//     eventsArr.forEach((item) => {
+//       if (
+//         item.day === activeDay &&
+//         item.month === month + 1 &&
+//         item.year === year
+//       ) {
+//         item.events.push(newEvent);
+//         eventAdded = true;
+//       }
+//     });
+//   }
+
+//   if (!eventAdded) {
+//     eventsArr.push({
+//       day: activeDay,
+//       month: month + 1,
+//       year: year,
+//       events: [newEvent],
+//     });
+//   }
+
+//   console.log(eventsArr);
+//   addEventWrapper.classList.remove("active");
+//   addEventTitle.value = "";
+//   addEventFrom.value = "";
+//   addEventTo.value = "";
+//   updateEvents(activeDay);
+//   //select active day and add event class if not added
+//   const activeDayEl = document.querySelector(".day.active");
+//   if (!activeDayEl.classList.contains("event")) {
+//     activeDayEl.classList.add("event");
+//   }
+// });
+
 addEventSubmit.addEventListener("click", () => {
+  const eventType = document.querySelector('input[name="event-type"]:checked');
+  if (!eventType) {
+    alert("Please select event type (Medicine or Task)");
+    return;
+  }
+
   const eventTitle = addEventTitle.value;
   const eventTimeFrom = addEventFrom.value;
   const eventTimeTo = addEventTo.value;
-  if (eventTitle === "" || eventTimeFrom === "" || eventTimeTo === "") {
-    alert("Please fill all the fields");
-    return;
-  }
 
-  //check correct time format 24 hour
-  const timeFromArr = eventTimeFrom.split(":");
-  const timeToArr = eventTimeTo.split(":");
-  if (
-    timeFromArr.length !== 2 ||
-    timeToArr.length !== 2 ||
-    timeFromArr[0] > 23 ||
-    timeFromArr[1] > 59 ||
-    timeToArr[0] > 23 ||
-    timeToArr[1] > 59
-  ) {
-    alert("Invalid Time Format");
-    return;
-  }
-
-  const timeFrom = convertTime(eventTimeFrom);
-  const timeTo = convertTime(eventTimeTo);
-
-  //check if event is already added
-  let eventExist = false;
-  eventsArr.forEach((event) => {
-    if (
-      event.day === activeDay &&
-      event.month === month + 1 &&
-      event.year === year
-    ) {
-      event.events.forEach((event) => {
-        if (event.title === eventTitle) {
-          eventExist = true;
-        }
-      });
+  if (eventType.value === "medicine") {
+    const medicineName = document.querySelector(".medicine-name").value;
+    const medicineDuration = document.querySelector('input[name="medicine-duration"]:checked');
+    if (!medicineName || !medicineDuration) {
+      alert("Please fill all the fields for the medicine event");
+      return;
     }
-  });
-  if (eventExist) {
-    alert("Event already added");
-    return;
+
+    // Add medicine event to eventsArr
+    const newEvent = {
+      title: medicineName,
+      duration: medicineDuration.value
+    };
+    addEventToEventsArr(newEvent);
+  } else if (eventType.value === "task") {
+    if (eventTitle === "" || eventTimeFrom === "" || eventTimeTo === "") {
+      alert("Please fill all the fields for the task event");
+      return;
+    }
+
+    // Add task event to eventsArr
+    const newEvent = {
+      title: eventTitle,
+      time: eventTimeFrom + " - " + eventTimeTo
+    };
+    addEventToEventsArr(newEvent);
   }
-  const newEvent = {
-    title: eventTitle,
-    time: timeFrom + " - " + timeTo,
-  };
-  console.log(newEvent);
-  console.log(activeDay);
+
+  // Clear input fields
+  addEventTitle.value = "";
+  addEventFrom.value = "";
+  addEventTo.value = "";
+
+  // Update events display
+  updateEvents(activeDay);
+  addEventWrapper.classList.remove("active");
+});
+
+function addEventToEventsArr(newEvent) {
   let eventAdded = false;
   if (eventsArr.length > 0) {
     eventsArr.forEach((item) => {
-      if (
-        item.day === activeDay &&
-        item.month === month + 1 &&
-        item.year === year
-      ) {
+      if (item.day === activeDay && item.month === month + 1 && item.year === year) {
         item.events.push(newEvent);
         eventAdded = true;
       }
@@ -391,22 +493,11 @@ addEventSubmit.addEventListener("click", () => {
       day: activeDay,
       month: month + 1,
       year: year,
-      events: [newEvent],
+      events: [newEvent]
     });
   }
+}
 
-  console.log(eventsArr);
-  addEventWrapper.classList.remove("active");
-  addEventTitle.value = "";
-  addEventFrom.value = "";
-  addEventTo.value = "";
-  updateEvents(activeDay);
-  //select active day and add event class if not added
-  const activeDayEl = document.querySelector(".day.active");
-  if (!activeDayEl.classList.contains("event")) {
-    activeDayEl.classList.add("event");
-  }
-});
 
 // Function to handle click events on the events container
 eventsContainer.addEventListener("click", (e) => {
